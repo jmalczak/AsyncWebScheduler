@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsyncWebScheduler
+﻿namespace AsyncWebScheduler.TaskFactory
 {
+    using System;
+    using System.Linq;
+
+    using global::AsyncWebScheduler._Interfaces;
+
     public class SimpleTaskFactory : ITaskFactory
     {
         public T Get<T>() where T : ITask
@@ -22,15 +21,13 @@ namespace AsyncWebScheduler
                                                           a.ExportedTypes.Any(t => t.FullName == typeName))
                                                    .ToList();
 
-            if (assembliesFromAppDomain != null && assembliesFromAppDomain.Any())
+            if (assembliesFromAppDomain.Any())
             {
                 var type = assembliesFromAppDomain.First().GetType(typeName);
                 return (ITask)Activator.CreateInstance(type);
             }
-            else
-            {
-                throw new ArgumentException("Incorrect task name.");
-            }
+            
+            throw new ArgumentException("Incorrect task name.");
         }
     }
 }
