@@ -18,7 +18,16 @@
 
         public async Task Run(string id)
         {
-            await taskFacotry.Get(id).Run();
+            var task = taskFacotry.Get(id);
+                
+            try
+            {
+                await task.Run();
+            }
+            finally
+            {
+                task.Dispose();
+            }
         }
     }
 }

@@ -7,5 +7,7 @@
         void RunEvery<T>(TimeSpan timeSpan) where T : ITask;
 
         void RunAt<T>(DateTime time) where T : ITask;
+
+        void RunEveryDayAt<T>(TimeSpan time) where T : ITask;
     }
 }

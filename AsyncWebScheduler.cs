@@ -42,7 +42,7 @@
             this.taskFactory = new SimpleTaskFactory();
             this.taskRunner = new WebTaskRunner(baseUrl, WebTaskRunnerController.ActionFormat);
             this.dateTime = new DateTimeHelper();
-            this.timerFactory = new TimerFactory.TimerFactory();
+            this.timerFactory = new TimerFactory.TimerFactory(this.dateTime);
 
             WebTaskRunnerController.SetTaskFactory(this.taskFactory);
         }
@@ -59,7 +59,12 @@
 
         public void RunAt<T>(System.DateTime time) where T : ITask
         {
-            this.timers.Add(this.timerFactory.CreateToRunAfter(async () => { await this.Run<T>(); }, time - this.dateTime.Now));
+            this.timers.Add(this.timerFactory.CreateToRunAt(async () => { await this.Run<T>(); }, time));
+        }
+
+        public void RunEveryDayAt<T>(TimeSpan time) where T : ITask
+        {
+            this.timers.Add(this.timerFactory.CreateToRunEveryDayAt(async () => { await this.Run<T>(); }, time));
         }
 
         private async Task Run<T>() where T : ITask

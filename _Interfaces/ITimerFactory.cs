@@ -4,8 +4,10 @@
 
     public interface ITimerFactory
     {
-        ITimer CreateToRunAfter(Action action, TimeSpan timeSpan);
+        ITimer CreateToRunAt(Action action, DateTime date);
 
-        ITimer CreateToRunEvery(Action action, TimeSpan timeSpan); 
+        ITimer CreateToRunEvery(Action action, TimeSpan timeSpan);
+
+        ITimer CreateToRunEveryDayAt(Action action, TimeSpan timeSpanFromStartOfTheDay);
     }
 }
